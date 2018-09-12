@@ -41,7 +41,7 @@ class ReachCalculatorTest extends TestCase {
      */
     public function testReturnsCorrectValueOnSuccess()
     {
-        $this->assertEquals(5574, $this->reachCalculator->calculate('https://twitter.com/marissa/status/1030100101665054720'));
+        $this->assertEquals(5580, $this->reachCalculator->calculate('https://twitter.com/marissa/status/1030100101665054720'));
     }
 
     /**
@@ -53,7 +53,7 @@ class ReachCalculatorTest extends TestCase {
     {
         $this->reachCalculator->calculate('https://twitter.com/marissa/status/1030100101665054720');
         $this->assertTrue(Cache::has('1030100101665054720'));
-        $this->assertEquals(5574,Cache::get('1030100101665054720'));
+        $this->assertEquals(5580,Cache::get('1030100101665054720'));
     }
 
 }
