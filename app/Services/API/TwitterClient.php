@@ -3,6 +3,8 @@
 namespace App\Services\API;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use Illuminate\Support\Facades\Log;
+use Abraham\TwitterOAuth\TwitterOAuthException;
 
 class TwitterClient {
 
@@ -98,9 +100,25 @@ class TwitterClient {
                     $response = $this->twitterOauth->get($path, $parameters);
                     break;
             }
-        } catch (Exception $ex) {
-            // TODO: LOG exception
+        } catch (TwitterOAuthException $ex) {
+            Log::error('error sending request to Twitter API',
+                       [
+                'code' => $ex->getCode(),
+                'Message' => $ex->getMessage(),
+                'path' => $path,
+                'parameters' => $parameters
+            ]);
             return false;
+        }
+
+        if (property_exists($response, 'errors')) {
+            Log::error('error sending request to Twitter API',
+                       [
+                'code' => $response->errors[0]->code,
+                'Message' => $response->errors[0]->message,
+                'path' => $path,
+                'parameters' => $parameters
+            ]);
         }
 
         return $response;
